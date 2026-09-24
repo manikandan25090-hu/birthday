@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Happy Birthday My Wifeyy</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to right, #ff99cc, #66ccff);
+      overflow: hidden;
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive;
+      color: white;
+    }
+    h1 {
+      font-size: 60px;
+      animation: glow 2s infinite alternate;
+      margin-top: 30px;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff; }
+      to { text-shadow: 0 0 30px #ff0, 0 0 50px #f0f; }
+    }
+    .message {
+      font-size: 22px;
+      margin-top: 20px;
+      line-height: 1.8;
+    }
+    .lover {
+      width: 200px;
+      border-radius: 50%;
+      position: absolute;
+      animation: moveAround 20s infinite linear;
+    }
+    @keyframes moveAround {
+      0%   { top: 20%; left: 10%; }
+      25%  { top: 30%; left: 70%; }
+      50%  { top: 60%; left: 50%; }
+      75%  { top: 40%; left: 20%; }
+      100% { top: 20%; left: 10%; }
+    }
+    .butterfly {
+      position: absolute;
+      font-size: 40px;
+      animation: circleFly 12s infinite linear;
+    }
+    @keyframes circleFly {
+      0%   { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+    }
+    .balloon {
+      position: absolute;
+      font-size: 50px;
+      animation: rise 8s infinite;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(100vh); }
+      100% { transform: translateY(-100vh); }
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Happy Birthday My Wifeyy 🎉</h1>
+  <div class="message">
+    <p>Hi ma, today very special day enna theriuma 💖</p>
+    <p>Ennoda thanga thoda birthday 🎂 I am very very happy for you</p>
+    <p>Eppovum happy irukkanum, ella time unkudavey than iruppa 💕</p>
+    <p>✨ Happy many more returns of the day ✨</p>
+  </div>
+
+  <!-- Lover Photo -->
+  <img src="jamuna.jpg" class="lover" alt="Jamuna">
+
+  <!-- Butterflies -->
+  <div class="butterfly" style="left:10%;top:70%;">🦋</div>
+  <div class="butterfly" style="left:80%;top:60%;">🦋</div>
+  <div class="butterfly" style="left:40%;top:80%;">🦋</div>
+
+  <!-- Balloons -->
+  <div class="balloon" style="left:20%;top:90%;">🎈</div>
+  <div class="balloon" style="left:60%;top:95%;">🎈</div>
+  <div class="balloon" style="left:80%;top:85%;">🎈</div>
+
+  <!-- Fireworks Canvas -->
+  <canvas id="fireworks"></canvas>
+
+  <script>
+    // Fireworks burst on click/touch
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function random(min,max){return Math.random()*(max-min)+min;}
+
+    class Particle {
+      constructor(x,y,color){
+        this.x=x;this.y=y;this.color=color;
+        this.size=2;
+        this.speedX=random(-3,3);
+        this.speedY=random(-3,3);
+        this.alpha=1;
+      }
+      update(){
+        this.x+=this.speedX;
+        this.y+=this.speedY;
+        this.alpha-=0.02;
+      }
+      draw(){
+        ctx.fillStyle=this.color;
+        ctx.globalAlpha=this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha=1;
+      }
+    }
+
+    let particles=[];
+    function animate(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      particles.forEach(p=>{p.update();p.draw();});
+      particles=particles.filter(p=>p.alpha>0);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function burst(x,y){
+      for(let i=0;i<50;i++){
+        particles.push(new Particle(x,y,`hsl(${random(0,360)},100%,50%)`));
+      }
+    }
+
+    canvas.addEventListener("click",e=>burst(e.clientX,e.clientY));
+    canvas.addEventListener("touchstart",e=>{
+      const t=e.touches[0];
+      burst(t.clientX,t.clientY);
+    });
+  </script>
+</body>
+</html>
